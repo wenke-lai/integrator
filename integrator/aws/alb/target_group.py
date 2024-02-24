@@ -1,4 +1,4 @@
-from pulumi_aws.aws import alb
+from pulumi_aws import alb
 
 from diagrams.eraser import cloud_architecture as diagram
 

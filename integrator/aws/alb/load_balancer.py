@@ -1,4 +1,4 @@
-from pulumi_aws.aws import alb
+from pulumi_aws import alb
 
 from diagrams.eraser import cloud_architecture as diagram
 
@@ -59,7 +59,7 @@ class LoadBalancer(alb.LoadBalancer):
         certificate_arn: str,
         **kwargs,
     ):
-        default_action = DefaultAction.forward(target_group_arn=target_group.arn)
+        default_action = DefaultAction.create_forward(target_group_arn=target_group.arn)
         listener = Listener(
             name,
             load_balancer_arn=self.arn,

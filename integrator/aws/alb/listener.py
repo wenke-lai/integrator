@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from pulumi_aws.aws import alb
+from pulumi_aws import alb
 
 from diagrams.eraser import cloud_architecture as diagram
 
@@ -8,11 +8,11 @@ from diagrams.eraser import cloud_architecture as diagram
 class DefaultAction(alb.ListenerDefaultActionArgs):
 
     @classmethod
-    def forward(cls, target_group_arn: str) -> DefaultAction:
+    def create_forward(cls, target_group_arn: str) -> DefaultAction:
         return cls(type="forward", target_group_arn=target_group_arn)
 
     @classmethod
-    def fixed_response(cls, status_code: int, message: str) -> DefaultAction:
+    def create_fixed_response(cls, status_code: int, message: str) -> DefaultAction:
         return cls(
             type="fixed-response",
             fixed_response={
