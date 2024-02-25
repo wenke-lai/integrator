@@ -37,10 +37,8 @@ class Vpc(ec2.Vpc):
         Args:
             name (str): The name of the internet gateway.
         """
-        internet_gateway = InternetGateway(f"{name}-internet-gateway", vpc=self)
-        default_route = GatewayRoute(
-            f"{name}-default-route", vpc=self, gateway=internet_gateway
-        )
+        internet_gateway = InternetGateway(name, vpc=self)
+        default_route = GatewayRoute(name, vpc=self, gateway=internet_gateway)
         return internet_gateway, default_route
 
     def create_public_subnet(
