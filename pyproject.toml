@@ -12,6 +12,7 @@ pulumi = "^3.107.0"
 pulumi-aws = "^6.23.0"
 # Diagram as Code
 diagrams = {git = "https://github.com/wenke-studio/diagram-as-code.git", rev = "0.1.0"}
+requests = "^2.31.0"
 
 [tool.poetry.group.dev.dependencies]
 # format
