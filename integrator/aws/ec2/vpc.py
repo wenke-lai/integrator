@@ -1,46 +1,92 @@
+from typing import Optional
+
 from pulumi_aws import ec2
 
 from diagrams.eraser import cloud_architecture as diagram
 
-# from .security_group import SecurityGroup
-# from .subnet import Subnet
+from .internet_gateway import GatewayRoute, InternetGateway
+from .security_group import SecurityGroup
+from .subnet import PrivateSubnet, PublicSubnet
 
 
 class Vpc(ec2.Vpc):
-    def __init__(self, name: str, **kwargs) -> None:
+    def __init__(
+        self,
+        name: str,
+        cidr_block: Optional[str] = "10.0.0.0/16",
+        enable_dns_hostnames: Optional[bool] = True,
+        **kwargs,
+    ) -> None:
         """Create a new VPC.
 
         Args:
             name (str): The name of the VPC.
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/ec2/vpc/#inputs)
         """
-        super().__init__(name, **kwargs)
+        super().__init__(
+            name,
+            cidr_block=cidr_block,
+            enable_dns_hostnames=enable_dns_hostnames,
+            **kwargs,
+        )
         self.diagram = diagram.Group(name, icon="aws-ec2")
 
-    def add_gateway(self, name: str, **kwargs) -> ec2.InternetGateway:
-        """Add a new internet gateway to the VPC.
+    def create_internet_gateway(self, name: str) -> None:
+        """Create a new internet gateway and attach it to the VPC.
 
         Args:
             name (str): The name of the internet gateway.
-            **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/ec2/internetgateway/#inputs)
-
-        Returns:
-            ec2.InternetGateway: The created internet gateway.
         """
+        internet_gateway = InternetGateway(f"{name}-internet-gateway", vpc=self)
+        default_route = GatewayRoute(
+            f"{name}-default-route", vpc=self, gateway=internet_gateway
+        )
+        return internet_gateway, default_route
 
-    def add_subnet(self, name: str, **kwargs) -> ec2.Subnet:
-        """Add a new subnet to the VPC.
-
+    def create_public_subnet(
+        self, name: str, availability_zone: str, cidr_block: str, **kwargs
+    ) -> PublicSubnet:
+        """Create a new public subnet in the VPC.
         Args:
             name (str): The name of the subnet.
+            availability_zone (str): The availability zone for the subnet.
+            cidr_block (str): The CIDR block for the subnet.
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/ec2/subnet/#inputs)
 
         Returns:
-            ec2.Subnet: The created subnet.
+            PublicSubnet: The created public subnet.
         """
+        return PublicSubnet(
+            name,
+            availability_zone=availability_zone,
+            cidr_block=cidr_block,
+            vpc=self,
+            **kwargs,
+        )
 
-    def add_security_group(self, name: str, **kwargs) -> ec2.SecurityGroup:
-        """Add a new security group to the VPC.
+    def create_private_subnet(
+        self, name: str, availability_zone: str, cidr_block: str, **kwargs
+    ) -> PrivateSubnet:
+        """Create a new Private subnet in the VPC.
+        Args:
+            name (str): The name of the subnet.
+            availability_zone (str): The availability zone for the subnet.
+            cidr_block (str): The CIDR block for the subnet.
+            **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/ec2/subnet/#inputs)
+
+        Returns:
+            PrivateSubnet: The created private subnet.
+        """
+        return PrivateSubnet(
+            name,
+            availability_zone=availability_zone,
+            cidr_block=cidr_block,
+            vpc=self,
+            **kwargs,
+        )
+
+    def create_security_group(self, name: str, **kwargs) -> ec2.SecurityGroup:
+        """Create a new security group to the VPC.
 
         Args:
             name (str): The name of the security group.
@@ -49,3 +95,4 @@ class Vpc(ec2.Vpc):
         Returns:
             ec2.SecurityGroup: The created security group.
         """
+        return SecurityGroup(name, vpc=self, **kwargs)
