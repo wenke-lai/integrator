@@ -55,7 +55,7 @@ class LaunchTemplate(ec2.LaunchTemplate):
             block_device_mappings=block_device_mappings,
             user_data=user_data.b64encode(),
             update_default_version=True,
-            key_name=key_pair.name,
+            key_name=key_pair.id,
             tag_specifications=[
                 {"resource_type": "instance", "tags": {"Name": name}},
                 {"resource_type": "volume", "tags": {"Name": name}},
