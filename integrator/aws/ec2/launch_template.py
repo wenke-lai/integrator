@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
+import pulumi
 from pulumi_aws import ec2
 
 from diagrams.eraser import cloud_architecture as diagram
@@ -21,6 +22,7 @@ class LaunchTemplate(ec2.LaunchTemplate):
         self,
         name: str,
         role: InstanceRole,
+        image: ec2.AwaitableGetAmiResult,
         user_data: UserData,
         key_pair: KeyPair,
         instance_type: str = "t3.micro",
@@ -50,12 +52,13 @@ class LaunchTemplate(ec2.LaunchTemplate):
         super().__init__(
             name,
             iam_instance_profile={"arn": profile.arn},
+            image_id=image.id,
+            user_data=user_data.b64encode(),
+            key_name=key_pair.id,
             instance_type=instance_type,
             credit_specification={"cpu_credits": cpu_credits},
             block_device_mappings=block_device_mappings,
-            user_data=user_data.b64encode(),
             update_default_version=True,
-            key_name=key_pair.id,
             tag_specifications=[
                 {"resource_type": "instance", "tags": {"Name": name}},
                 {"resource_type": "volume", "tags": {"Name": name}},
@@ -84,6 +87,7 @@ class LaunchTemplate(ec2.LaunchTemplate):
             launch_template=self,
             subnet=subnet,
             security_group=security_group,
+            opts=pulumi.ResourceOptions(parent=self),
             **kwargs,
         )
         self.diagram.edges.connect(instance.diagram)
