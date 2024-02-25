@@ -29,12 +29,14 @@ class Role(iam.Role):
         statements: list[iam.GetPolicyDocumentStatementArgs | dict],
         **kwargs
     ) -> Policy:
-        return Policy(
+        policy = Policy(
             name,
             statements=statements,
             opts=pulumi.ResourceOptions(parent=self),
             **kwargs,
         )
+        self.attach(name, policy)
+        return policy
 
     def attach(self, name: str, policy: iam.Policy) -> None:
         iam.RolePolicyAttachment(
