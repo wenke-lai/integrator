@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pulumi_aws import ec2
+from pulumi_aws import ec2, get_availability_zones
 
 from diagrams.eraser import cloud_architecture as diagram
 
@@ -30,6 +30,14 @@ class Vpc(ec2.Vpc):
             **kwargs,
         )
         self.diagram = diagram.Group(name, icon="aws-ec2")
+
+        self.availability_zones: list[str] = self.get_availability_zones()
+
+    def get_availability_zones(self, max_azs: Optional[int] = None) -> list[str]:
+        available = get_availability_zones(state="available")
+        if max_azs:
+            return available.names[:max_azs]
+        return available.names  # full list of available AZs
 
     def create_internet_gateway(self, name: str) -> None:
         """Create a new internet gateway and attach it to the VPC.
