@@ -39,6 +39,7 @@ class GatewayRoute(ec2.Route):
             f"{name}-default-route",
             route_table_id=vpc.default_route_table_id,
             gateway_id=gateway.id,
+            destination_cidr_block="0.0.0.0/0",
             opts=pulumi.ResourceOptions(parent=gateway),
         )
         gateway.diagram.edges.connect(vpc.diagram)
