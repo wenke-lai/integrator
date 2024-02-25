@@ -91,7 +91,7 @@ class Vpc(ec2.Vpc):
             **kwargs,
         )
 
-    def create_security_group(self, name: str, **kwargs) -> ec2.SecurityGroup:
+    def create_security_group(self, name: str, **kwargs) -> SecurityGroup:
         """Create a new security group to the VPC.
 
         Args:
