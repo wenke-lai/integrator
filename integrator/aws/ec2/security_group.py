@@ -47,7 +47,7 @@ class SecurityGroup(ec2.SecurityGroup):
         return ec2.SecurityGroupRule(
             name,
             security_group_id=self.id,
-            type="egress",
+            type="ingress",
             from_port=port,
             to_port=port,
             protocol=protocol,
@@ -77,7 +77,7 @@ class SecurityGroup(ec2.SecurityGroup):
         return ec2.SecurityGroupRule(
             name,
             security_group_id=self.id,
-            type="ingress",
+            type="egress",
             from_port=port,
             to_port=port,
             protocol=protocol,
