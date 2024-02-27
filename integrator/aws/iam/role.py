@@ -76,4 +76,5 @@ class InstanceRole(Role):
         Returns:
             iam.InstanceProfile: The new IAM Instance Profile.
         """
+        kwargs.setdefault("opts", pulumi.ResourceOptions(parent=self))
         return iam.InstanceProfile(name, role=self.name, **kwargs)
