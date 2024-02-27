@@ -82,12 +82,17 @@ class LaunchTemplate(ec2.LaunchTemplate):
         Returns:
             ec2.Instance: The new EC2 Instance.
         """
+        kwargs.setdefault(
+            "opts",
+            pulumi.ResourceOptions(
+                parent=self, ignore_changes=["tags", "default_tags"]
+            ),
+        )
         instance = Instance(
             name,
             launch_template=self,
             subnet=subnet,
             security_group=security_group,
-            opts=pulumi.ResourceOptions(parent=self),
             **kwargs,
         )
         self.diagram.edges.connect(instance.diagram)
