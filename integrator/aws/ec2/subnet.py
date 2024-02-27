@@ -30,6 +30,7 @@ class Subnet(ec2.Subnet):
             map_public_ip_on_launch (bool): Whether to map public IP on launch.
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/ec2/subnet/#inputs)
         """
+        kwargs.setdefault("tags", {"Name": name})
         super().__init__(
             name,
             availability_zone=availability_zone,

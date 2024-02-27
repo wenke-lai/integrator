@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import typing
 
+import pulumi
 from pulumi_aws import ec2
 
 from diagrams.eraser import cloud_architecture as diagram
@@ -30,6 +31,10 @@ class Instance(ec2.Instance):
             security_group (SecurityGroup): The security group to attach to the instance.
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/ec2/instance/#inputs)
         """
+        kwargs.setdefault("tags", {"Name": name})
+        kwargs.setdefault(
+            "opts", pulumi.ResourceOptions(ignore_changes=["tags", "default_tags"])
+        )
         super().__init__(
             name,
             subnet_id=subnet.id,

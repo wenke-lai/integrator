@@ -23,6 +23,7 @@ class Vpc(ec2.Vpc):
             name (str): The name of the VPC.
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/ec2/vpc/#inputs)
         """
+        kwargs.setdefault("tags", {"Name": name})
         super().__init__(
             name,
             cidr_block=cidr_block,

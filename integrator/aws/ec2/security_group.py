@@ -19,6 +19,7 @@ class SecurityGroup(ec2.SecurityGroup):
             name (str): The name of the EC2 Security Group.
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/ec2/securitygroup/#inputs)
         """
+        kwargs.setdefault("tags", {"Name": name})
         super().__init__(name, vpc_id=vpc.id, **kwargs)
         self.diagram = diagram.Node(name, icon="aws-ec2")
 
@@ -46,6 +47,7 @@ class SecurityGroup(ec2.SecurityGroup):
 
         return ec2.SecurityGroupRule(
             name,
+            description=name,
             security_group_id=self.id,
             type="ingress",
             from_port=port,
@@ -76,6 +78,7 @@ class SecurityGroup(ec2.SecurityGroup):
 
         return ec2.SecurityGroupRule(
             name,
+            description=name,
             security_group_id=self.id,
             type="egress",
             from_port=port,
