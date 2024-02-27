@@ -24,7 +24,7 @@ class SecurityGroup(ec2.SecurityGroup):
         self.diagram = diagram.Node(name, icon="aws-ec2")
 
         self.add_egress_rule(
-            "default-outbound", port=0, protocol="-1", cidr_blocks=["0.0.0.0/0"]
+            name + "-default-outbound", port=0, protocol="-1", cidr_blocks=["0.0.0.0/0"]
         )
 
     def add_ingress_rule(
