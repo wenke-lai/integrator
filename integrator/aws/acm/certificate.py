@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pulumi_aws.aws import acm
+from pulumi_aws import acm
 
 from diagrams.eraser import cloud_architecture as diagram
 
