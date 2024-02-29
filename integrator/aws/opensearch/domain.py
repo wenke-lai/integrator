@@ -2,12 +2,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from pulumi_aws import opensearch
+from pulumi_aws import iam, opensearch
 
 from diagrams.eraser import cloud_architecture as diagram
 
-from ..cloudwatch import LogGroup
-from .log_group_resource import LogResourcePolicy
+from ..cloudwatch import LogGroup, LogResourcePolicy
 
 if TYPE_CHECKING:
     from ..acm import Certificate
@@ -72,15 +71,30 @@ class Domain(opensearch.Domain):
         search_slow_logs = LogGroup(name=f"{name}-search-slow-logs")
         es_application_logs = LogGroup(name=f"{name}-es-application-logs")
         audit_logs = LogGroup(name=f"{name}-audit-logs")
-        LogResourcePolicy(
-            name,
-            groups=[
-                index_slow_logs,
-                search_slow_logs,
-                es_application_logs,
-                audit_logs,
-            ],
+        document = iam.get_policy_document(
+            statements=[
+                iam.GetPolicyDocumentStatementArgs(
+                    effect="Allow",
+                    principals=[
+                        iam.GetPolicyDocumentStatementPrincipalArgs(
+                            type="Service", identifiers=["es.amazonaws.com"]
+                        )
+                    ],
+                    actions=[
+                        "logs:CreateLogStream",
+                        "logs:PutLogEvents",
+                        "logs:PutLogEventsBatch",
+                    ],
+                    resources=[
+                        index_slow_logs.arn.apply(lambda arn: f"{arn}:*"),
+                        search_slow_logs.arn.apply(lambda arn: f"{arn}:*"),
+                        es_application_logs.arn.apply(lambda arn: f"{arn}:*"),
+                        audit_logs.arn.apply(lambda arn: f"{arn}:*"),
+                    ],
+                )
+            ]
         )
+        LogResourcePolicy(name, policy_name=name, policy_document=document.json)
 
         super().__init__(
             name,
