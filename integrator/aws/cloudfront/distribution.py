@@ -23,9 +23,9 @@ class Distribution(cloudfront.Distribution):
         domain_name: str,
         bucket: Bucket,
         origin_access_control: OriginAccessControl,
-        cache_policy: CachePolicy,
-        ordered_cache_policy: CachePolicy,
-        response_header_policy: ResponseHeaderPolicy,
+        cache_policy: Optional[CachePolicy] = None,
+        ordered_cache_policy: Optional[CachePolicy] = None,
+        response_header_policy: Optional[ResponseHeaderPolicy] = None,
         certificate: Optional[Certificate] = None,
         http_version: str = "http1.1",
         enabled: bool = True,
@@ -51,6 +51,18 @@ class Distribution(cloudfront.Distribution):
                 acm_certificate_arn=certificate.arn,
                 ssl_support_method="sni-only",
                 minimum_protocol_version="TLSv1.2_2021",
+            )
+
+        if cache_policy is None:
+            cache_policy = cloudfront.get_cache_policy(
+                name="Managed-CachingOptimized",
+            )
+        if ordered_cache_policy is None:
+            ordered_cache_policy = cache_policy
+
+        if response_header_policy is None:
+            response_header_policy = cloudfront.get_response_headers_policy(
+                name="Managed-SecurityHeadersPolicy"
             )
 
         super().__init__(
