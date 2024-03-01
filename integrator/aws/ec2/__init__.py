@@ -1,3 +1,4 @@
+from .ami import Ubuntu
 from .key_pair import KeyPair
 from .launch_template import LaunchTemplate
 from .user_data import UserData
@@ -8,4 +9,6 @@ __all__ = [
     "LaunchTemplate",
     "UserData",
     "Vpc",
+    # AMI
+    "Ubuntu",
 ]
