@@ -12,24 +12,27 @@ if TYPE_CHECKING:
 
 
 class SecurityGroup(ec2.SecurityGroup):
-    def __init__(self, name: str, vpc: Vpc, **kwargs) -> None:
+    def __init__(self, resource_name: str, vpc: Vpc, **kwargs) -> None:
         """Create a new EC2 Security Group.
 
         Args:
-            name (str): The name of the EC2 Security Group.
+            resource_name (str): The name of the EC2 Security Group.
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/ec2/securitygroup/#inputs)
         """
-        kwargs.setdefault("tags", {"Name": name})
-        super().__init__(name, vpc_id=vpc.id, **kwargs)
-        self.diagram = diagram.Node(name, icon="aws-ec2")
+        kwargs.setdefault("tags", {"Name": resource_name})
+        super().__init__(resource_name, vpc_id=vpc.id, **kwargs)
+        self.diagram = diagram.Node(resource_name, icon="aws-ec2")
 
         self.add_egress_rule(
-            name + "-default-outbound", port=0, protocol="-1", cidr_blocks=["0.0.0.0/0"]
+            resource_name + "-default-outbound",
+            port=0,
+            protocol="-1",
+            cidr_blocks=["0.0.0.0/0"],
         )
 
     def add_ingress_rule(
         self,
-        name: str,
+        resource_name: str,
         port: int,
         protocol: str,
         cidr_blocks: Optional[list[str]] = None,
@@ -46,8 +49,8 @@ class SecurityGroup(ec2.SecurityGroup):
             )
 
         return ec2.SecurityGroupRule(
-            name,
-            description=name,
+            resource_name,
+            description=resource_name,
             security_group_id=self.id,
             type="ingress",
             from_port=port,
@@ -60,7 +63,7 @@ class SecurityGroup(ec2.SecurityGroup):
 
     def add_egress_rule(
         self,
-        name: str,
+        resource_name: str,
         port: int,
         protocol: str,
         cidr_blocks: Optional[list[str]] = None,
@@ -77,8 +80,8 @@ class SecurityGroup(ec2.SecurityGroup):
             )
 
         return ec2.SecurityGroupRule(
-            name,
-            description=name,
+            resource_name,
+            description=resource_name,
             security_group_id=self.id,
             type="egress",
             from_port=port,

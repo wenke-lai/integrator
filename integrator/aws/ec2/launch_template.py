@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 class LaunchTemplate(ec2.LaunchTemplate):
     def __init__(
         self,
-        name: str,
+        resource_name: str,
         role: InstanceRole,
         image: ec2.AwaitableGetAmiResult,
         user_data: UserData,
@@ -33,10 +33,10 @@ class LaunchTemplate(ec2.LaunchTemplate):
         """Create a new EC2 Launch Template.
 
         Args:
-            name (str): The name of the EC2 Launch Template.
+            resource_name (str): The name of the EC2 Launch Template.
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/ec2/launchtemplate/#inputs)
         """
-        profile = role.create_instance_profile(name)
+        profile = role.create_instance_profile(resource_name)
         if block_device_mappings is None:
             block_device_mappings = [
                 {
@@ -50,7 +50,7 @@ class LaunchTemplate(ec2.LaunchTemplate):
             ]
 
         super().__init__(
-            name,
+            resource_name,
             iam_instance_profile={"arn": profile.arn},
             image_id=image.id,
             user_data=user_data.b64encode(),
@@ -60,21 +60,25 @@ class LaunchTemplate(ec2.LaunchTemplate):
             block_device_mappings=block_device_mappings,
             update_default_version=True,
             tag_specifications=[
-                {"resource_type": "instance", "tags": {"Name": name}},
-                {"resource_type": "volume", "tags": {"Name": name}},
+                {"resource_type": "instance", "tags": {"Name": resource_name}},
+                {"resource_type": "volume", "tags": {"Name": resource_name}},
             ],
             **kwargs,
         )
 
-        self.diagram = diagram.Node(name, icon="aws-ec2")
+        self.diagram = diagram.Node(resource_name, icon="aws-ec2")
 
     def create_instance(
-        self, name: str, subnet: Subnet, security_group: SecurityGroup, **kwargs
+        self,
+        resource_name: str,
+        subnet: Subnet,
+        security_group: SecurityGroup,
+        **kwargs,
     ) -> ec2.Instance:
         """Create a new EC2 Instance using this Launch Template.
 
         Args:
-            name (str): The name of the EC2 Instance.
+            resource_name (str): The name of the EC2 Instance.
             subnet (Subnet): The subnet to launch the instance in.
             security_group (SecurityGroup): The security group to attach to the instance.
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/ec2/instance/#inputs)
@@ -89,7 +93,7 @@ class LaunchTemplate(ec2.LaunchTemplate):
             ),
         )
         instance = Instance(
-            name,
+            resource_name,
             launch_template=self,
             subnet=subnet,
             security_group=security_group,

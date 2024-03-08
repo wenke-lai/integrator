@@ -5,15 +5,15 @@ from diagrams.eraser import cloud_architecture as diagram
 
 class ResponseHeaderPolicy(cloudfront.ResponseHeadersPolicy):
 
-    def __init__(self, name: str, **kwargs) -> None:
+    def __init__(self, resource_name: str, **kwargs) -> None:
         """Create a new Response Header Policy.
 
         Args:
-            name (str): The name of the Response Header Policy.
+            resource_name (str): The name of the Response Header Policy.
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/cloudfront/responseheaderpolicy/#inputs)
         """
 
-        super().__init__(name, **kwargs)
+        super().__init__(resource_name, **kwargs)
         self.diagram = diagram.Node(
-            name + "-response-header-policy", icon="aws-cloudfront"
+            resource_name + "-response-header-policy", icon="aws-cloudfront"
         )

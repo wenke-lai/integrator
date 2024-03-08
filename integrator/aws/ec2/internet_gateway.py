@@ -12,34 +12,41 @@ if TYPE_CHECKING:
 
 
 class InternetGateway(ec2.InternetGateway):
-    def __init__(self, name: str, vpc: Vpc, **kwargs) -> None:
+    def __init__(self, resource_name: str, vpc: Vpc, **kwargs) -> None:
         """Create a new internet gateway.
 
         Args:
-            name (str): The name of the internet gateway.
+            resource_name (str): The name of the internet gateway.
             vpc (Vpc): The VPC to attach the internet gateway to.
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/ec2/internetgateway/#inputs)
         """
+
         super().__init__(
-            name, vpc_id=vpc.id, opts=pulumi.ResourceOptions(parent=vpc), **kwargs
+            resource_name,
+            vpc_id=vpc.id,
+            opts=pulumi.ResourceOptions(parent=vpc),
+            **kwargs,
         )
-        self.diagram = diagram.Node(name)
+
+        self.diagram = diagram.Node(resource_name)
 
 
 class GatewayRoute(ec2.Route):
-    def __init__(self, name: str, vpc: Vpc, gateway: InternetGateway) -> None:
+    def __init__(self, resource_name: str, vpc: Vpc, gateway: InternetGateway) -> None:
         """Create a new default route between the VPC and the internet gateway.
 
         Args:
-            name (str): The name of the route.
+            resource_name (str): The name of the route.
             vpc (Vpc): The VPC to add the route to.
             gateway (InternetGateway): The internet gateway to route traffic to.
         """
+
         super().__init__(
-            f"{name}-default-route",
+            resource_name,
             route_table_id=vpc.default_route_table_id,
             gateway_id=gateway.id,
             destination_cidr_block="0.0.0.0/0",
             opts=pulumi.ResourceOptions(parent=gateway),
         )
+
         gateway.diagram.edges.connect(vpc.diagram)

@@ -4,13 +4,15 @@ from diagrams.eraser import cloud_architecture as diagram
 
 
 class Policy(autoscaling.Policy):
-    def __init__(self, name: str, **kwargs) -> None:
+    def __init__(self, resource_name: str, **kwargs) -> None:
         """Create a new AutoScaling Group.
 
         Args:
-            name (str): The name of the AutoScaling Group.
+            resource_name (str): The name of the AutoScaling Group.
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/autoscaling/group/#inputs)
         """
-        super().__init__(name, **kwargs)
+        super().__init__(resource_name, **kwargs)
 
-        self.diagram = diagram.Node(name + "policy", icon="aws-ec2-auto-scaling")
+        self.diagram = diagram.Node(
+            resource_name + "policy", icon="aws-ec2-auto-scaling"
+        )

@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 class Distribution(cloudfront.Distribution):
     def __init__(
         self,
-        name: str,
+        resource_name: str,
         domain_name: str,
         bucket: Bucket,
         origin_access_control: OriginAccessControl,
@@ -34,7 +34,7 @@ class Distribution(cloudfront.Distribution):
         """Create a new CloudFront Distribution.
 
         Args:
-            name (str): The name of the CloudFront Distribution.
+            resource_name (str): The name of the CloudFront Distribution.
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/cloudfront/distribution/#inputs)
         """
         kwargs.setdefault("comment", domain_name)
@@ -66,7 +66,7 @@ class Distribution(cloudfront.Distribution):
             )
 
         super().__init__(
-            name,
+            resource_name,
             enabled=enabled,
             http_version=http_version,
             is_ipv6_enabled=True,
@@ -134,7 +134,7 @@ class Distribution(cloudfront.Distribution):
             **kwargs,
         )
 
-        self.diagram = diagram.Node(name, icon="aws-cloudfront")
+        self.diagram = diagram.Node(resource_name, icon="aws-cloudfront")
 
         document = iam.get_policy_document(
             version="2008-10-17",
@@ -161,4 +161,4 @@ class Distribution(cloudfront.Distribution):
                 )
             ],
         )
-        BucketPolicy(name, bucket=bucket, policy=document.json)
+        BucketPolicy(resource_name, bucket=bucket, policy=document.json)

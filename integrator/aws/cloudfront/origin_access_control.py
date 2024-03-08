@@ -4,31 +4,31 @@ from diagrams.eraser import cloud_architecture as diagram
 
 
 class OriginAccessControl(cloudfront.OriginAccessControl):
-    def __init__(self, name: str, **kwargs) -> None:
+    def __init__(self, resource_name: str, **kwargs) -> None:
         """Create a new Origin Access Control.
 
         Args:
-            name (str): The name of the Origin Access Control.
+            resource_name (str): The name of the Origin Access Control.
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/cloudfront/originaccesscontrol/#inputs)
         """
-        super().__init__(name, **kwargs)
+        super().__init__(resource_name, **kwargs)
 
         self.diagram = diagram.Node(
-            name + "origin-access-control", icon="aws-cloudfront"
+            resource_name + "origin-access-control", icon="aws-cloudfront"
         )
 
 
 class S3OriginAccessControl(cloudfront.OriginAccessControl):
-    def __init__(self, name: str, **kwargs) -> None:
+    def __init__(self, resource_name: str, **kwargs) -> None:
         """Create a new S3 Origin Access Control.
 
         Args:
-            name (str): The name of the S3 Origin Access Control.
+            resource_name (str): The name of the S3 Origin Access Control.
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/cloudfront/originaccesscontrol/#inputs)
         """
 
         super().__init__(
-            name,
+            resource_name,
             origin_access_control_origin_type="s3",
             signing_behavior="always",
             signing_protocol="sigv4",

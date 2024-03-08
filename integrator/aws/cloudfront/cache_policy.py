@@ -6,7 +6,7 @@ from diagrams.eraser import cloud_architecture as diagram
 class CachePolicy(cloudfront.CachePolicy):
     def __init__(
         self,
-        name: str,
+        resource_name: str,
         default_ttl: int = 300,
         max_ttl: int = 300,
         min_ttl: int = 60,
@@ -15,7 +15,7 @@ class CachePolicy(cloudfront.CachePolicy):
         """Create a new Cache Policy.
 
         Args:
-            name (str): The name of the Cache Policy.
+            resource_name (str): The name of the Cache Policy.
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/cloudfront/cachepolicy/#inputs)
         """
         kwargs.setdefault(
@@ -35,11 +35,13 @@ class CachePolicy(cloudfront.CachePolicy):
             ),
         )
         super().__init__(
-            name,
+            resource_name,
             default_ttl=default_ttl,
             max_ttl=max_ttl,
             min_ttl=min_ttl,
             **kwargs,
         )
 
-        self.diagram = diagram.Node(name + "-cache-policy", icon="aws-cloudfront")
+        self.diagram = diagram.Node(
+            resource_name + "-cache-policy", icon="aws-cloudfront"
+        )

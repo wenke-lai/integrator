@@ -26,7 +26,7 @@ class DefaultAction(alb.ListenerDefaultActionArgs):
 class Listener(alb.Listener):
     def __init__(
         self,
-        name: str,
+        resource_name: str,
         load_balancer_arn: str,
         certificate_arn: str,
         default_actions: list[DefaultAction],
@@ -35,10 +35,21 @@ class Listener(alb.Listener):
         ssl_policy: str = "ELBSecurityPolicy-2016-08",
         **kwargs,
     ) -> None:
-        """Create a new Listener."""
+        """Create a new Listener.
+
+        Args:
+            resource_name (str): The name of the listener.
+            load_balancer_arn (str): The ARN of the load balancer.
+            certificate_arn (str): The ARN of the certificate to use.
+            default_actions (list[DefaultAction]): A list of default actions to take.
+            port (int, optional): The port to listen on. Defaults to 443.
+            protocol (str, optional): The protocol to use. Defaults to "HTTPS".
+            ssl_policy (str, optional): The SSL policy to use. Defaults to "ELBSecurityPolicy-2016-08".
+            **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/alb/listener/#inputs)
+        """
 
         super().__init__(
-            name,
+            resource_name,
             load_balancer_arn=load_balancer_arn,
             certificate_arn=certificate_arn,
             port=port,
@@ -49,5 +60,5 @@ class Listener(alb.Listener):
         )
 
         self.diagram = diagram.Node(
-            name + "-listener", icon="aws-elastic-load-balancing"
+            resource_name + "-listener", icon="aws-elastic-load-balancing"
         )

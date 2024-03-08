@@ -11,16 +11,18 @@ if TYPE_CHECKING:
 
 
 class BucketPolicy(s3.BucketPolicy):
-    def __init__(self, name: str, bucket: Bucket, policy: str, **kwargs) -> None:
+    def __init__(
+        self, resource_name: str, bucket: Bucket, policy: str, **kwargs
+    ) -> None:
         """Create a new S3 Bucket Policy.
 
         Args:
-            name (str): The name of the S3 Bucket Policy.
+            resource_name (str): The name of the S3 Bucket Policy.
             bucket (Bucket): The S3 Bucket to attach the policy to.
             policy (str): The policy to attach to the S3 Bucket.
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/s3/bucketpolicy/#inputs)
         """
 
-        super().__init__(name, bucket=bucket.id, policy=policy, **kwargs)
+        super().__init__(resource_name, bucket=bucket.id, policy=policy, **kwargs)
 
-        self.diagram = diagram.Node(name + "-bucket-policy", icon="aws-s3")
+        self.diagram = diagram.Node(resource_name + "-bucket-policy", icon="aws-s3")

@@ -18,7 +18,7 @@ class Domain(opensearch.Domain):
 
     def __init__(
         self,
-        name: str,
+        resource_name: str,
         subnets: list[Subnet],
         security_group: SecurityGroup,
         instance_count: int = 1,
@@ -34,7 +34,7 @@ class Domain(opensearch.Domain):
         """Create a new OpenSearch Domain.
 
         Args:
-            name (str): The name of the OpenSearch Domain.
+            resource_name (str): The name of the OpenSearch Domain.
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/opensearch/domain/#inputs)
         """
 
@@ -67,10 +67,12 @@ class Domain(opensearch.Domain):
                 tls_security_policy="Policy-Min-TLS-1-0-2019-07",
             )
 
-        index_slow_logs = LogGroup(name=f"{name}-index-slow-logs")
-        search_slow_logs = LogGroup(name=f"{name}-search-slow-logs")
-        es_application_logs = LogGroup(name=f"{name}-es-application-logs")
-        audit_logs = LogGroup(name=f"{name}-audit-logs")
+        index_slow_logs = LogGroup(resource_name=f"{resource_name}-index-slow-logs")
+        search_slow_logs = LogGroup(resource_name=f"{resource_name}-search-slow-logs")
+        es_application_logs = LogGroup(
+            resource_name=f"{resource_name}-es-application-logs"
+        )
+        audit_logs = LogGroup(resource_name=f"{resource_name}-audit-logs")
         document = iam.get_policy_document(
             statements=[
                 iam.GetPolicyDocumentStatementArgs(
@@ -94,11 +96,11 @@ class Domain(opensearch.Domain):
                 )
             ]
         )
-        LogResourcePolicy(name, policy_name=name, policy_document=document.json)
+        LogResourcePolicy(resource_name, policy_document=document.json)
 
         super().__init__(
-            name,
-            domain_name=name,
+            resource_name,
+            domain_name=resource_name,
             engine_version="OpenSearch_2.11",
             # Node
             cluster_config=cluster_config,
@@ -152,4 +154,5 @@ class Domain(opensearch.Domain):
             ],
             **kwargs,
         )
-        self.diagram = diagram.Node(name, icon="aws-opensearch-service")
+
+        self.diagram = diagram.Node(resource_name, icon="aws-opensearch-service")
