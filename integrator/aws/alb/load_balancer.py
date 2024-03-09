@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from pulumi_aws import alb
 
 from diagrams.eraser import cloud_architecture as diagram
@@ -5,13 +9,17 @@ from diagrams.eraser import cloud_architecture as diagram
 from .listener import DefaultAction, Listener
 from .target_group import TargetGroup
 
+if TYPE_CHECKING:
+    from ..ec2.security_group import SecurityGroup
+    from ..ec2.subnet import Subnet
+
 
 class LoadBalancer(alb.LoadBalancer):
     def __init__(
         self,
         resource_name: str,
-        security_groups: list,
-        subnets: list,
+        security_groups: list[SecurityGroup],
+        subnets: list[Subnet],
         internal: bool = False,
         enable_deletion_protection: bool = True,
         **kwargs,
