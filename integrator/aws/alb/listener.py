@@ -55,7 +55,7 @@ class Listener(alb.Listener):
             port=port,
             protocol=protocol,
             ssl_policy=ssl_policy,
-            default_action=[default_actions],
+            default_actions=default_actions,
             **kwargs,
         )
 
