@@ -1,3 +1,24 @@
+## 0.3.0 (2024-03-09)
+
+### Feat
+
+- **aws.opensearch**: improve the domain for easier usage
+- **aws.cloudwatch**: add log-group and log-group-resource resources
+
+### Fix
+
+- **aws**: use resource-name instead of name
+- **aws.ecr**: fix the conflict between name and resource-name
+- **aws**: add imports for main resources
+- **aws.cloudfront**: update the import path fo resources
+- **aws.cloudfront**: add default cache-policy, ordered-cache-policy and response-header-policy
+- **aws.cloudfront**: enhance distribution resources
+- **aws.acm**: fix the wrong import
+
+### Refactor
+
+- **aws.opensearch**: remove es-log-group-resource
+
 ## 0.2.0 (2024-02-29)
 
 ### Feat
