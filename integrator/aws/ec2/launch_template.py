@@ -28,6 +28,7 @@ class LaunchTemplate(ec2.LaunchTemplate):
         instance_type: str = "t3.micro",
         cpu_credits: str = "standard",
         block_device_mappings: Optional[list[dict[str, str | dict]]] = None,
+        security_group: Optional[SecurityGroup] = None,
         **kwargs,
     ) -> None:
         """Create a new EC2 Launch Template.
@@ -49,6 +50,11 @@ class LaunchTemplate(ec2.LaunchTemplate):
                 }
             ]
 
+        vpc_security_group_ids = None
+        if security_group:
+            # provides the security group for auto-scaling groups
+            vpc_security_group_ids = [security_group.id]
+
         super().__init__(
             resource_name,
             iam_instance_profile={"arn": profile.arn},
@@ -63,6 +69,7 @@ class LaunchTemplate(ec2.LaunchTemplate):
                 {"resource_type": "instance", "tags": {"Name": resource_name}},
                 {"resource_type": "volume", "tags": {"Name": resource_name}},
             ],
+            vpc_security_group_ids=vpc_security_group_ids,
             **kwargs,
         )
 
