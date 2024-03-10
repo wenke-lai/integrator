@@ -6,7 +6,7 @@ from pulumi_aws import rds
 
 from diagrams.eraser import cloud_architecture as diagram
 
-from .cluster_instance import ClusterInstance
+from .cluster_instance import ServerlessV2Instance
 
 if TYPE_CHECKING:
     from ..ec2.security_group import SecurityGroup
@@ -77,5 +77,5 @@ class AuroraMySQLServerlessV2(Cluster):
             **kwargs,
         )
 
-    def create_instance(self, resource_name: str, **kwargs) -> ClusterInstance:
-        return ClusterInstance(resource_name, cluster=self, **kwargs)
+    def create_instance(self, resource_name: str, **kwargs) -> ServerlessV2Instance:
+        return ServerlessV2Instance(resource_name, cluster=self, **kwargs)
