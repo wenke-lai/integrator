@@ -6,6 +6,8 @@ from pulumi_aws import rds
 
 from diagrams.eraser import cloud_architecture as diagram
 
+from .cluster_instance import ClusterInstance
+
 if TYPE_CHECKING:
     from ..ec2.security_group import SecurityGroup
     from .subnet_group import SubnetGroup
@@ -74,3 +76,6 @@ class AuroraMySQLServerlessV2(Cluster):
             enabled_cloudwatch_logs_exports=["audit", "error", "general", "slowquery"],
             **kwargs,
         )
+
+    def create_instance(self, resource_name: str, **kwargs) -> ClusterInstance:
+        return ClusterInstance(resource_name, cluster=self, **kwargs)
