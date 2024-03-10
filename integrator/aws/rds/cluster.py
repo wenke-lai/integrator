@@ -66,7 +66,7 @@ class AuroraMySQLServerlessV2(Cluster):
             # Availability & durability
             availability_zones=availability_zones,
             # Connectivity
-            network_type="DUAL",  # ipv4, ipv6, and both
+            network_type="IPV4",  # IPV4 | DUAL
             db_subnet_group_name=subnet_group.name,
             vpc_security_group_ids=[security_group.id],
             # Monitoring
