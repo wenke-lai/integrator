@@ -40,6 +40,9 @@ class Vpc(ec2.Vpc):
             return available.names[:max_azs]
         return available.names  # full list of available AZs
 
+    def set_availability_zones(self, max_azs: Optional[int] = None) -> None:
+        self.availability_zones = self.get_availability_zones(max_azs)
+
     def create_internet_gateway(self, resource_name: str) -> None:
         """Create a new internet gateway and attach it to the VPC.
 
