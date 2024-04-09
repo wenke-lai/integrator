@@ -133,7 +133,7 @@ class Zone(route53.Zone):
             ARecord: The A record resource
         """
 
-        opts = ResourceOptions(parent=self._resource)
+        opts = ResourceOptions(parent=self)
         opts.merge(kwargs.pop("opts", None))
 
         return ARecord(
@@ -160,7 +160,7 @@ class Zone(route53.Zone):
             CNameRecord: The CNAME record resource
         """
 
-        opts = ResourceOptions(parent=self._resource)
+        opts = ResourceOptions(parent=self)
         opts.merge(kwargs.pop("opts", None))
 
         return CNameRecord(
