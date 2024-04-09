@@ -37,6 +37,11 @@ class ExistingZone:
             lambda zone_id: f"{url}?region={region}#ListRecordSets/{zone_id}"
         )
 
+    @property
+    def price(self) -> float:
+        """Return the price per monthly of the resource in USD."""
+        return 0.5
+
     def create_a_record(
         self, resource_name: str, name: str, record: str, **kwargs
     ) -> ARecord:
@@ -117,6 +122,11 @@ class Zone(route53.Zone):
         return self.zone_id.apply(
             lambda zone_id: f"{url}?region={region}#ListRecordSets/{zone_id}"
         )
+
+    @property
+    def price(self) -> float:
+        """Return the price per monthly of the resource in USD."""
+        return 0.5
 
     def create_a_record(
         self, resource_name: str, name: str, record: str, **kwargs
