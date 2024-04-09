@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import typing
 
-from pulumi import ResourceOptions
+from pulumi import Config, ResourceOptions
 from pulumi_aws import route53
 
 from diagrams.eraser import cloud_architecture as diagram
@@ -26,6 +26,15 @@ class ExistingZone:
 
         self._resource = route53.Zone.get(
             resource_name=resource_name, id=zone_id, **kwargs
+        )
+
+    @property
+    def shortcut(self) -> str:
+        region = Config("aws").get("region", default="us-east-1")
+        url = "https://us-east-1.console.aws.amazon.com/route53/v2/hostedzones"
+
+        return self._resource.zone_id.apply(
+            lambda zone_id: f"{url}?region={region}#ListRecordSets/{zone_id}"
         )
 
     def create_a_record(
@@ -99,6 +108,15 @@ class Zone(route53.Zone):
         super().__init__(resource_name, name=domain, **kwargs)
 
         self.diagram = diagram.Node(resource_name, icon="aws-route53")
+
+    @property
+    def shortcut(self) -> str:
+        region = Config("aws").get("region", default="us-east-1")
+        url = "https://us-east-1.console.aws.amazon.com/route53/v2/hostedzones"
+
+        return self.zone_id.apply(
+            lambda zone_id: f"{url}?region={region}#ListRecordSets/{zone_id}"
+        )
 
     def create_a_record(
         self, resource_name: str, name: str, record: str, **kwargs
