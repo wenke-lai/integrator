@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Any, Literal
 
 from pulumi_aws import acm, get_arn
 
@@ -17,6 +17,9 @@ class ExistingCertificate:
         self._resource = acm.Certificate.get(resource_name, arn, **kwargs)
 
         self.diagram = diagram.Node(resource_name, icon="aws-certificate-manager")
+
+    def __getattribute__(self, name: str) -> Any:
+        return getattr(self._resource, name)
 
     @property
     def shortcut(self) -> str:

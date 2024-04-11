@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import typing
+from typing import TYPE_CHECKING, Any
 
 from pulumi import Config, ResourceOptions
 from pulumi_aws import route53
@@ -9,7 +9,7 @@ from diagrams.eraser import cloud_architecture as diagram
 
 from .record import ARecord, CNameRecord
 
-if typing.TYPE_CHECKING:
+if TYPE_CHECKING:
     from ..ec2 import Vpc
 
 
@@ -27,6 +27,9 @@ class ExistingZone:
         self._resource = route53.Zone.get(
             resource_name=resource_name, id=zone_id, **kwargs
         )
+
+    def __getattribute__(self, name: str) -> Any:
+        return getattr(self._resource, name)
 
     @property
     def shortcut(self) -> str:
