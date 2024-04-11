@@ -5,6 +5,35 @@ from pulumi_aws import acm, get_arn
 from diagrams.eraser import cloud_architecture as diagram
 
 
+class ExistingCertificate:
+    def __init__(self, resource_name: str, arn: str, **kwargs) -> None:
+        """Look up Existing Certificate Resource
+
+        Args:
+            resource_name (str): The name of the certificate.
+            arn (str): The ARN of the certificate.
+            **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/acm/certificate/#look-up)
+        """
+        self._resource = acm.Certificate.get(resource_name, arn, **kwargs)
+
+        self.diagram = diagram.Node(resource_name, icon="aws-certificate-manager")
+
+    @property
+    def shortcut(self) -> str:
+        arn = get_arn(self._resource.arn)
+        certificate_id = arn.resource.split("/")[-1]
+        url = f"https://{arn.region}.console.aws.amazon.com/acm/home"
+        return f"{url}?region={arn.region}#/certificates/{certificate_id}"
+
+    @property
+    def price(self) -> float:
+        """Return the price per monthly for the resource in USD.
+
+        Public SSL/TLS certificates provisioned through AWS Certificate Manager are free
+        """
+        return 0.0
+
+
 class Certificate(acm.Certificate):
 
     def __init__(
