@@ -28,7 +28,7 @@ class ExistingZone:
             resource_name=resource_name, id=zone_id, **kwargs
         )
 
-    def __getattribute__(self, name: str) -> Any:
+    def __getattr__(self, name: str) -> Any:
         return getattr(self._resource, name)
 
     @property

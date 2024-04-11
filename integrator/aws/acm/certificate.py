@@ -18,7 +18,7 @@ class ExistingCertificate:
 
         self.diagram = diagram.Node(resource_name, icon="aws-certificate-manager")
 
-    def __getattribute__(self, name: str) -> Any:
+    def __getattr__(self, name: str) -> Any:
         return getattr(self._resource, name)
 
     @property
