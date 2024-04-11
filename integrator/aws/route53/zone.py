@@ -14,8 +14,9 @@ if TYPE_CHECKING:
 
 
 class ExistingZone:
+    # pylint: disable=redefined-builtin
 
-    def __init__(self, resource_name: str, zone_id: str, **kwargs) -> None:
+    def __init__(self, resource_name: str, id: str, **kwargs) -> None:
         """Look up Existing Zone Resource
 
         Args:
@@ -24,9 +25,7 @@ class ExistingZone:
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/route53/zone/#look-up)
         """
 
-        self._resource = route53.Zone.get(
-            resource_name=resource_name, id=zone_id, **kwargs
-        )
+        self._resource = route53.Zone.get(resource_name=resource_name, id=id, **kwargs)
 
     def __getattr__(self, name: str) -> Any:
         return getattr(self._resource, name)
@@ -100,10 +99,11 @@ class ExistingZone:
 
 
 class Zone(route53.Zone):
+    # pylint: disable=redefined-builtin
 
     @staticmethod
-    def get(resource_name: str, zone_id: str, **kwargs) -> ExistingZone:
-        return ExistingZone(resource_name=resource_name, zone_id=zone_id, **kwargs)
+    def get(resource_name: str, id: str, **kwargs) -> ExistingZone:
+        return ExistingZone(resource_name=resource_name, id=id, **kwargs)
 
     def __init__(self, resource_name: str, domain: str, **kwargs) -> None:
         """Create a new Route53 Zone.

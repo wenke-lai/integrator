@@ -39,6 +39,10 @@ class ExistingCertificate:
 
 class Certificate(acm.Certificate):
 
+    @staticmethod
+    def get(resource_name: str, arn: str, **kwargs) -> ExistingCertificate:
+        return ExistingCertificate(resource_name, arn, **kwargs)
+
     def __init__(
         self,
         resource_name: str,
