@@ -2,6 +2,8 @@ from pulumi_aws import s3
 
 from diagrams.eraser import cloud_architecture as diagram
 
+GB = 1024**3
+
 
 class Object(s3.BucketObjectv2):
     def __init__(self, resource_name: str, **kwargs) -> None:
@@ -15,3 +17,14 @@ class Object(s3.BucketObjectv2):
         super().__init__(resource_name, **kwargs)
 
         self.diagram = diagram.Node(resource_name, icon="aws-simple-storage-service")
+
+    @property
+    def shortcut(self) -> str:
+        # todo: TBD
+        return ""
+
+    @property
+    def price(self) -> float:
+        """Return the price of a bytes per monthly in USD"""
+
+        return 0.023 / GB

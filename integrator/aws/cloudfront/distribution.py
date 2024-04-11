@@ -162,3 +162,12 @@ class Distribution(cloudfront.Distribution):
             ],
         )
         BucketPolicy(resource_name, bucket=bucket, policy=document.json)
+
+    @property
+    def shortcut(self) -> str:
+        url = "https://us-east-1.console.aws.amazon.com/cloudfront/v4/home"
+        return self.id.apply(lambda id: f"{url}?region=us-west-2#/distributions/{id}")
+
+    @property
+    def price(self) -> float:
+        return 0.0
