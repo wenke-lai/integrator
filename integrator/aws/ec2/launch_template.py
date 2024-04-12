@@ -24,7 +24,7 @@ class LaunchTemplate(ec2.LaunchTemplate):
         role: InstanceRole,
         image: ec2.AwaitableGetAmiResult,
         user_data: UserData,
-        key_pair: KeyPair,
+        key_pair: Optional[KeyPair] = None,
         instance_type: str = "t3.micro",
         cpu_credits: str = "standard",
         block_device_mappings: Optional[list[dict[str, str | dict]]] = None,
@@ -35,6 +35,14 @@ class LaunchTemplate(ec2.LaunchTemplate):
 
         Args:
             resource_name (str): The name of the EC2 Launch Template.
+            role: The IAM role to associate with the instances.
+            image (ec2.AwaitableGetAmiResult): The AMI to launch the instances with.
+            user_data (UserData): The user data to run on the instances.
+            key_pair (Optional[KeyPair], optional): The key pair to associate with the instances. Defaults to None.
+            instance_type (str, optional): The instance type to launch. Defaults to "t3.micro".
+            cpu_credits (str, optional): The CPU credits mode for the instances. Defaults to "standard".
+            block_device_mappings (Optional[list[dict[str, str | dict]]], optional): The block device mappings for the instances. Defaults to None.
+            security_group (Optional[SecurityGroup], optional): The security group to associate with the instances. Defaults to None.
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/ec2/launchtemplate/#inputs)
         """
         profile = role.create_instance_profile(resource_name)
@@ -55,12 +63,16 @@ class LaunchTemplate(ec2.LaunchTemplate):
             # provides the security group for auto-scaling groups
             vpc_security_group_ids = [security_group.id]
 
+        key_name = None
+        if key_pair:
+            key_name = key_pair.id
+
         super().__init__(
             resource_name,
             iam_instance_profile={"arn": profile.arn},
             image_id=image.id,
             user_data=user_data.b64encode(),
-            key_name=key_pair.id,
+            key_name=key_name,
             instance_type=instance_type,
             credit_specification={"cpu_credits": cpu_credits},
             block_device_mappings=block_device_mappings,
