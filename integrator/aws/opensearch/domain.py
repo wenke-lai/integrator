@@ -2,9 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from pulumi_aws import iam, opensearch
-
 from diagrams.eraser import cloud_architecture as diagram
+from pulumi_aws import iam, opensearch
 
 from ..cloudwatch import LogGroup, LogResourcePolicy
 
@@ -15,7 +14,6 @@ if TYPE_CHECKING:
 
 
 class Domain(opensearch.Domain):
-
     def __init__(
         self,
         resource_name: str,
@@ -29,6 +27,7 @@ class Domain(opensearch.Domain):
         # master_type: str = "t3.medium.search",
         endpoint: str = None,
         certificate: Certificate = None,
+        engine_version: str = "OpenSearch_2.11",
         **kwargs,
     ) -> None:
         """Create a new OpenSearch Domain.
@@ -58,7 +57,7 @@ class Domain(opensearch.Domain):
             cluster_config.zone_awareness_config = None
 
         domain_endpoint_options = None
-        if endpoint & certificate:
+        if endpoint and certificate:
             domain_endpoint_options = opensearch.DomainDomainEndpointOptionsArgs(
                 enforce_https=True,
                 custom_endpoint_enabled=True,
@@ -101,7 +100,7 @@ class Domain(opensearch.Domain):
         super().__init__(
             resource_name,
             domain_name=resource_name,
-            engine_version="OpenSearch_2.11",
+            engine_version=engine_version,
             # Node
             cluster_config=cluster_config,
             ebs_options=opensearch.DomainEbsOptionsArgs(

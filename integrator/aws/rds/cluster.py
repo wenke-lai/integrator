@@ -47,6 +47,7 @@ class AuroraMySQLServerlessV2(Cluster):
             security_group (SecurityGroup): A SecurityGroup object.
             min_capacity (float, optional): The minimum capacity of the Aurora Serverless DB cluster. Defaults to 0.5.
             max_capacity (float, optional): The maximum capacity of the Aurora Serverless DB cluster. Defaults to 1.
+            engine_version (str, optional): The Aurora MySQL engine version. Defaults to "8.0.mysql_aurora.3.04.1".
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/rds/cluster/#inputs)
         """
 
