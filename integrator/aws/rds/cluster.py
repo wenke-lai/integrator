@@ -2,9 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from pulumi_aws import rds
-
 from diagrams.eraser import cloud_architecture as diagram
+from pulumi_aws import rds
 
 from .cluster_instance import ServerlessV2Instance
 
@@ -28,7 +27,6 @@ class Cluster(rds.Cluster):
 
 
 class AuroraMySQLServerlessV2(Cluster):
-
     def __init__(
         self,
         resource_name: str,
@@ -37,6 +35,7 @@ class AuroraMySQLServerlessV2(Cluster):
         security_group: SecurityGroup,
         min_capacity: float = 0.5,
         max_capacity: float = 1,
+        engine_version: str = "8.0.mysql_aurora.3.04.1",
         **kwargs,
     ) -> None:
         """Create a new Aurora MySQL Serverless v2 Cluster.
@@ -55,7 +54,7 @@ class AuroraMySQLServerlessV2(Cluster):
             resource_name,
             # Engine Options
             engine="aurora-mysql",
-            engine_version="8.0.mysql_aurora.3.04.1",
+            engine_version=engine_version,
             # Settings
             master_username="admin",
             manage_master_user_password=True,
