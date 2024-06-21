@@ -1,6 +1,7 @@
+from diagrams.eraser import cloud_architecture as diagram
 from pulumi_aws import cognito
 
-from diagrams.eraser import cloud_architecture as diagram
+from .user_pool_client import UserPoolClient
 
 
 class UserPool(cognito.UserPool):
@@ -15,3 +16,13 @@ class UserPool(cognito.UserPool):
         super().__init__(resource_name, **kwargs)
 
         self.diagram = diagram.Node(resource_name + "user-pool", icon="aws-cognito")
+
+    def create_client(
+        self, resource_name: str, generate_secret: bool = False, **kwargs
+    ) -> UserPoolClient:
+        return UserPoolClient(
+            resource_name,
+            user_pool_id=self.id,
+            generate_secret=generate_secret,
+            **kwargs,
+        )
