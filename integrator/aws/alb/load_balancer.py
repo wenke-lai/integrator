@@ -21,7 +21,6 @@ class LoadBalancer(alb.LoadBalancer):
         security_groups: list[SecurityGroup],
         subnets: list[Subnet],
         internal: bool = False,
-        enable_deletion_protection: bool = True,
         **kwargs,
     ) -> None:
         """Create a new LoadBalancer.
@@ -31,7 +30,6 @@ class LoadBalancer(alb.LoadBalancer):
             security_groups (list): A list of security groups to associate with the LoadBalancer.
             subnets (list): A list of subnets to associate with the LoadBalancer.
             internal (bool, optional): If true, the LoadBalancer will be internal. Defaults to False.
-            enable_deletion_protection (bool, optional): If true, deletion protection will be enabled. Defaults to True.
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/alb/loadbalancer/#inputs)
         """
         super().__init__(
@@ -40,7 +38,6 @@ class LoadBalancer(alb.LoadBalancer):
             security_groups=[sg.id for sg in security_groups],
             subnets=[subnet.id for subnet in subnets],
             internal=internal,
-            enable_deletion_protection=enable_deletion_protection,
             **kwargs,
         )
 
