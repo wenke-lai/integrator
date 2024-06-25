@@ -1,10 +1,9 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
-
-from pulumi_aws import cloudfront, iam
+from typing import TYPE_CHECKING, Literal, Optional
 
 from diagrams.eraser import cloud_architecture as diagram
+from pulumi_aws import cloudfront, iam
 
 from ..s3.bucket_policy import BucketPolicy
 
@@ -14,6 +13,8 @@ if TYPE_CHECKING:
     from .cache_policy import CachePolicy
     from .origin_access_control import OriginAccessControl
     from .response_header_policy import ResponseHeaderPolicy
+
+HTTP_VERSION = Literal["http1.1", "http2", "http2and3", "http3"]
 
 
 class Distribution(cloudfront.Distribution):
@@ -27,7 +28,7 @@ class Distribution(cloudfront.Distribution):
         ordered_cache_policy: Optional[CachePolicy] = None,
         response_header_policy: Optional[ResponseHeaderPolicy] = None,
         certificate: Optional[Certificate] = None,
-        http_version: str = "http1.1",
+        http_version: Optional[HTTP_VERSION] = "http2",
         enabled: bool = True,
         **kwargs,
     ) -> None:
