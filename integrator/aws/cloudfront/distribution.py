@@ -16,6 +16,8 @@ if TYPE_CHECKING:
 
 HTTP_VERSION = Literal["http1.1", "http2", "http2and3", "http3"]
 
+PRICE_CLASS = Literal["PriceClass_All", "PriceClass_100", "PriceClass_200"]
+
 
 class Distribution(cloudfront.Distribution):
     def __init__(
@@ -29,6 +31,7 @@ class Distribution(cloudfront.Distribution):
         response_header_policy: Optional[ResponseHeaderPolicy] = None,
         certificate: Optional[Certificate] = None,
         http_version: Optional[HTTP_VERSION] = "http2",
+        price_class: Optional[PRICE_CLASS] = "PriceClass_100",
         enabled: bool = True,
         **kwargs,
     ) -> None:
@@ -74,7 +77,7 @@ class Distribution(cloudfront.Distribution):
             # CNAME & SSL
             aliases=aliases,
             viewer_certificate=viewer_certificate,
-            price_class="PriceClass_100",
+            price_class=price_class,
             default_root_object="index.html",
             # Origin
             origins=[
