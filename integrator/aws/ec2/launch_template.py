@@ -114,5 +114,4 @@ class LaunchTemplate(ec2.LaunchTemplate):
             security_group=security_group,
             **kwargs,
         )
-        self.diagram.edges.connect(instance.diagram)
         return instance

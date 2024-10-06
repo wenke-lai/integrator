@@ -50,7 +50,6 @@ class LoadBalancer(alb.LoadBalancer):
         target_group = TargetGroup(
             resource_name, port=port, protocol=protocol, vpc_id=vpc_id, **kwargs
         )
-        self.diagram.append(target_group.diagram)
         return target_group
 
     def create_listener(
@@ -68,7 +67,4 @@ class LoadBalancer(alb.LoadBalancer):
             default_actions=[default_action],
             **kwargs,
         )
-
-        self.diagram.append(listener.diagram)
-        listener.diagram.edges.connect(target_group.diagram)
         return listener

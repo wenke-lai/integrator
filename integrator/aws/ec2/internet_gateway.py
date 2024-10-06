@@ -44,5 +44,3 @@ class GatewayRoute(ec2.Route):
             destination_cidr_block="0.0.0.0/0",
             opts=pulumi.ResourceOptions(parent=gateway),
         )
-
-        gateway.diagram.edges.connect(vpc.diagram)

@@ -38,8 +38,6 @@ class Subnet(ec2.Subnet):
             **kwargs,
         )
 
-        vpc.diagram.append(self.diagram)
-
 
 class PublicSubnet(Subnet):
     def __init__(
