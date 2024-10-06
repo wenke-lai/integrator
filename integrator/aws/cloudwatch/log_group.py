@@ -1,7 +1,5 @@
 from pulumi_aws import cloudwatch
 
-from diagrams.eraser import cloud_architecture as diagram
-
 
 class LogGroup(cloudwatch.LogGroup):
     def __init__(
@@ -16,4 +14,3 @@ class LogGroup(cloudwatch.LogGroup):
         """
 
         super().__init__(resource_name, retention_in_days=retention_in_days, **kwargs)
-        self.diagram = diagram.Node(resource_name, icon="aws-cloudwatch")

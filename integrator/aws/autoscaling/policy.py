@@ -1,7 +1,5 @@
 from pulumi_aws import autoscaling
 
-from diagrams.eraser import cloud_architecture as diagram
-
 
 class Policy(autoscaling.Policy):
     def __init__(self, resource_name: str, **kwargs) -> None:
@@ -12,7 +10,3 @@ class Policy(autoscaling.Policy):
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/autoscaling/group/#inputs)
         """
         super().__init__(resource_name, **kwargs)
-
-        self.diagram = diagram.Node(
-            resource_name + "policy", icon="aws-ec2-auto-scaling"
-        )

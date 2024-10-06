@@ -114,14 +114,6 @@ wheels = [
 ]
 
 [[package]]
-name = "diagrams"
-version = "0.1.0"
-source = { git = "https://github.com/wenke-lai/diagram-as-code.git#06742c53a861e3ee9c31679fd997c32d166a797c" }
-dependencies = [
-    { name = "attrs" },
-]
-
-[[package]]
 name = "dill"
 version = "0.3.8"
 source = { registry = "https://pypi.org/simple" }
@@ -161,7 +153,6 @@ name = "integrator"
 version = "0.4.0"
 source = { virtual = "." }
 dependencies = [
-    { name = "diagrams" },
     { name = "pulumi" },
     { name = "pulumi-aws" },
     { name = "requests" },
@@ -175,7 +166,6 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "diagrams", git = "https://github.com/wenke-lai/diagram-as-code.git" },
     { name = "pulumi", specifier = ">=3.133.0" },
     { name = "pulumi-aws", specifier = ">=6.52.0" },
     { name = "requests", specifier = ">=2.32.3" },

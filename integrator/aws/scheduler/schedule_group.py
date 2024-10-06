@@ -1,7 +1,5 @@
 from pulumi_aws import scheduler
 
-from diagrams.eraser import cloud_architecture as diagram
-
 
 class ScheduleGroup(scheduler.ScheduleGroup):
     def __init__(self, resource_name: str, **kwargs) -> None:
@@ -13,7 +11,3 @@ class ScheduleGroup(scheduler.ScheduleGroup):
         """
 
         super().__init__(resource_name, **kwargs)
-
-        self.diagram = diagram.Group(
-            resource_name + "-schedule-group", icon="aws-eventbridge"
-        )

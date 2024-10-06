@@ -7,7 +7,6 @@ requires-python = ">=3.12"
 dependencies = [
     "pulumi>=3.133.0",
     "pulumi-aws>=6.52.0",
-    "diagrams",
     "requests>=2.32.3",
 ]
 
@@ -16,9 +15,6 @@ dev-dependencies = [
     "commitizen>=3.29.0",
     "ruff>=0.6.7",
 ]
-
-[tool.uv.sources]
-diagrams = { git = "https://github.com/wenke-lai/diagram-as-code.git" }
 
 [tool.commitizen]
 name = "cz_conventional_commits"

@@ -1,7 +1,5 @@
 from pulumi_aws import sns
 
-from diagrams.eraser import cloud_architecture as diagram
-
 
 class Topic(sns.Topic):
     def __init__(self, resource_name: str, **kwargs) -> None:
@@ -13,7 +11,3 @@ class Topic(sns.Topic):
         """
 
         super().__init__(resource_name, **kwargs)
-
-        self.diagram = diagram.Node(
-            resource_name, icon="aws-simple-notification-service"
-        )

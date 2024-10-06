@@ -5,7 +5,6 @@ import typing
 import pulumi
 from pulumi_aws import ec2
 
-from diagrams.eraser import cloud_architecture as diagram
 
 if typing.TYPE_CHECKING:
     from .launch_template import LaunchTemplate
@@ -42,4 +41,3 @@ class Instance(ec2.Instance):
             launch_template={"id": launch_template.id},
             **kwargs,
         )
-        self.diagram = diagram.Node(resource_name, icon="aws-ec2")

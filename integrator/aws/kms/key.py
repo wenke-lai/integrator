@@ -1,7 +1,5 @@
 from pulumi_aws import kms
 
-from diagrams.eraser import cloud_architecture as diagram
-
 
 class Key(kms.Key):
     def __init__(self, resource_name: str, **kwargs) -> None:
@@ -13,5 +11,3 @@ class Key(kms.Key):
         """
 
         super().__init__(resource_name, **kwargs)
-
-        self.diagram = diagram.Node(resource_name + "-key", icon="aws-kms")

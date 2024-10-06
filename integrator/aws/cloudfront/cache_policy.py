@@ -1,7 +1,5 @@
 from pulumi_aws import cloudfront
 
-from diagrams.eraser import cloud_architecture as diagram
-
 
 class CachePolicy(cloudfront.CachePolicy):
     def __init__(
@@ -40,8 +38,4 @@ class CachePolicy(cloudfront.CachePolicy):
             max_ttl=max_ttl,
             min_ttl=min_ttl,
             **kwargs,
-        )
-
-        self.diagram = diagram.Node(
-            resource_name + "-cache-policy", icon="aws-cloudfront"
         )

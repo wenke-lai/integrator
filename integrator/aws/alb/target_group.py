@@ -1,7 +1,5 @@
 from pulumi_aws import alb
 
-from diagrams.eraser import cloud_architecture as diagram
-
 
 class TargetGroup(alb.TargetGroup):
     def __init__(
@@ -27,8 +25,4 @@ class TargetGroup(alb.TargetGroup):
             protocol=protocol,
             vpc_id=vpc_id,
             **kwargs,
-        )
-
-        self.diagram = diagram.Node(
-            resource_name + "-target-group", icon="aws-elastic-load-balancing"
         )

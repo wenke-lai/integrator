@@ -2,8 +2,6 @@ from typing import Any, Literal
 
 from pulumi_aws import acm, get_arn
 
-from diagrams.eraser import cloud_architecture as diagram
-
 
 class ExistingCertificate:
     def __init__(self, resource_name: str, arn: str, **kwargs) -> None:
@@ -15,8 +13,6 @@ class ExistingCertificate:
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/acm/certificate/#look-up)
         """
         self._resource = acm.Certificate.get(resource_name, arn, **kwargs)
-
-        self.diagram = diagram.Node(resource_name, icon="aws-certificate-manager")
 
     def __getattr__(self, name: str) -> Any:
         return getattr(self._resource, name)
@@ -38,7 +34,6 @@ class ExistingCertificate:
 
 
 class Certificate(acm.Certificate):
-
     @staticmethod
     def get(resource_name: str, arn: str, **kwargs) -> ExistingCertificate:
         return ExistingCertificate(resource_name, arn, **kwargs)
@@ -65,8 +60,6 @@ class Certificate(acm.Certificate):
             validation_method=validation_method,
             **kwargs,
         )
-
-        self.diagram = diagram.Node(resource_name, icon="aws-certificate-manager")
 
     @property
     def shortcut(self) -> str:

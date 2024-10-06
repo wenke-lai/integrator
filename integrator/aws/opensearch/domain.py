@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from diagrams.eraser import cloud_architecture as diagram
 from pulumi_aws import iam, opensearch
 
 from ..cloudwatch import LogGroup, LogResourcePolicy
@@ -153,5 +152,3 @@ class Domain(opensearch.Domain):
             ],
             **kwargs,
         )
-
-        self.diagram = diagram.Node(resource_name, icon="aws-opensearch-service")

@@ -4,8 +4,6 @@ import typing
 
 from pulumi_aws import ec2
 
-from diagrams.eraser import cloud_architecture as diagram
-
 if typing.TYPE_CHECKING:
     from .vpc import Vpc
 
@@ -39,7 +37,6 @@ class Subnet(ec2.Subnet):
             map_public_ip_on_launch=map_public_ip_on_launch,
             **kwargs,
         )
-        self.diagram = diagram.Group(resource_name, icon="aws-ec2")
 
         vpc.diagram.append(self.diagram)
 

@@ -4,8 +4,6 @@ from typing import TYPE_CHECKING
 
 from pulumi_aws import alb
 
-from diagrams.eraser import cloud_architecture as diagram
-
 from .listener import DefaultAction, Listener
 from .target_group import TargetGroup
 
@@ -40,8 +38,6 @@ class LoadBalancer(alb.LoadBalancer):
             internal=internal,
             **kwargs,
         )
-
-        self.diagram = diagram.Group(resource_name, icon="aws-elastic-load-balancing")
 
     def create_target_group(
         self,

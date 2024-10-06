@@ -2,8 +2,6 @@ from typing import Optional
 
 from pulumi_aws import ecr
 
-from diagrams.eraser import cloud_architecture as diagram
-
 
 class Repository(ecr.Repository):
     def __init__(
@@ -20,6 +18,3 @@ class Repository(ecr.Repository):
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/ecr/repository/#inputs)
         """
         super().__init__(resource_name, name=name, **kwargs)
-        self.diagram = diagram.Node(
-            resource_name, icon="aws-elastic-container-registry"
-        )

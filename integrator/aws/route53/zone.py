@@ -5,8 +5,6 @@ from typing import TYPE_CHECKING, Any
 from pulumi import Config, ResourceOptions
 from pulumi_aws import route53
 
-from diagrams.eraser import cloud_architecture as diagram
-
 from .record import ARecord, CNameRecord
 
 if TYPE_CHECKING:
@@ -114,8 +112,6 @@ class Zone(route53.Zone):
         """
 
         super().__init__(resource_name, name=domain, **kwargs)
-
-        self.diagram = diagram.Node(resource_name, icon="aws-route53")
 
     @property
     def shortcut(self) -> str:

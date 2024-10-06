@@ -1,16 +1,12 @@
 import pulumi
 import pulumi_aws as aws
 
-import pytest
-from diagrams.eraser import cloud_architecture as diagram
-
 from integrator.aws import ec2
 
 # pylint: disable=redefined-outer-name
 
 
 class PulumiMocks(pulumi.runtime.Mocks):
-
     def new_resource(self, args: pulumi.runtime.MockResourceArgs):
         return [args.name + "_id", args.inputs]
 
@@ -28,7 +24,6 @@ def setup_function():
 def test_create_vpc():
     vpc = ec2.Vpc("test")
     assert isinstance(vpc, aws.ec2.Vpc)
-    assert isinstance(vpc.diagram, diagram.Group)
 
     def check_vpc(args):
         cidr_block, enable_dns_hostnames = args
@@ -44,9 +39,6 @@ def test_vpc_creates_internet_gateway():
     igw, default_route = vpc.create_internet_gateway("test")
     assert isinstance(igw, aws.ec2.InternetGateway)
     assert isinstance(default_route, aws.ec2.Route)
-
-    assert isinstance(igw.diagram, diagram.Node)
-    assert not hasattr(default_route, "diagram"), "route should not have a diagram"
 
 
 @pulumi.runtime.test
@@ -93,4 +85,3 @@ def test_vpc_creates_security_group():
     vpc = ec2.Vpc("test")
     sg = vpc.create_security_group("test")
     assert isinstance(sg, aws.ec2.SecurityGroup)
-    assert isinstance(sg.diagram, diagram.Node)

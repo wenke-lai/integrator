@@ -5,8 +5,6 @@ from typing import TYPE_CHECKING, Optional
 import pulumi
 from pulumi_aws import ec2
 
-from diagrams.eraser import cloud_architecture as diagram
-
 if TYPE_CHECKING:
     from .vpc import Vpc
 
@@ -21,7 +19,6 @@ class SecurityGroup(ec2.SecurityGroup):
         """
         kwargs.setdefault("tags", {"Name": resource_name})
         super().__init__(resource_name, vpc_id=vpc.id, **kwargs)
-        self.diagram = diagram.Node(resource_name, icon="aws-ec2")
 
         self.add_egress_rule(
             resource_name + "-default-outbound",

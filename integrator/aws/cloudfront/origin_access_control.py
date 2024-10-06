@@ -1,7 +1,5 @@
 from pulumi_aws import cloudfront
 
-from diagrams.eraser import cloud_architecture as diagram
-
 
 class OriginAccessControl(cloudfront.OriginAccessControl):
     def __init__(self, resource_name: str, **kwargs) -> None:
@@ -12,10 +10,6 @@ class OriginAccessControl(cloudfront.OriginAccessControl):
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/cloudfront/originaccesscontrol/#inputs)
         """
         super().__init__(resource_name, **kwargs)
-
-        self.diagram = diagram.Node(
-            resource_name + "origin-access-control", icon="aws-cloudfront"
-        )
 
 
 class S3OriginAccessControl(cloudfront.OriginAccessControl):
@@ -32,5 +26,5 @@ class S3OriginAccessControl(cloudfront.OriginAccessControl):
             origin_access_control_origin_type="s3",
             signing_behavior="always",
             signing_protocol="sigv4",
-            **kwargs
+            **kwargs,
         )

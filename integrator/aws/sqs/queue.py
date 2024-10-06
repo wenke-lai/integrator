@@ -1,7 +1,5 @@
 from pulumi_aws import sqs
 
-from diagrams.eraser import cloud_architecture as diagram
-
 
 class Queue(sqs.Queue):
     def __init__(self, resource_name: str, **kwargs) -> None:
@@ -13,5 +11,3 @@ class Queue(sqs.Queue):
         """
 
         super().__init__(resource_name, **kwargs)
-
-        self.diagram = diagram.Node(resource_name, icon="aws-simple-queue-service")

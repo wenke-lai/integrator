@@ -5,8 +5,6 @@ from typing import TYPE_CHECKING
 import pulumi
 from pulumi_aws import ec2
 
-from diagrams.eraser import cloud_architecture as diagram
-
 if TYPE_CHECKING:
     from .vpc import Vpc
 
@@ -27,8 +25,6 @@ class InternetGateway(ec2.InternetGateway):
             opts=pulumi.ResourceOptions(parent=vpc),
             **kwargs,
         )
-
-        self.diagram = diagram.Node(resource_name)
 
 
 class GatewayRoute(ec2.Route):

@@ -2,11 +2,8 @@ from __future__ import annotations
 
 from pulumi_aws import alb
 
-from diagrams.eraser import cloud_architecture as diagram
-
 
 class DefaultAction(alb.ListenerDefaultActionArgs):
-
     @classmethod
     def create_forward(cls, target_group_arn: str) -> DefaultAction:
         return cls(type="forward", target_group_arn=target_group_arn)
@@ -57,8 +54,4 @@ class Listener(alb.Listener):
             ssl_policy=ssl_policy,
             default_actions=default_actions,
             **kwargs,
-        )
-
-        self.diagram = diagram.Node(
-            resource_name + "-listener", icon="aws-elastic-load-balancing"
         )

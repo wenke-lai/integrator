@@ -3,8 +3,6 @@ import json
 import pulumi
 from pulumi_aws import iam
 
-from diagrams.eraser import cloud_architecture as diagram
-
 from .policy import Policy
 
 
@@ -21,15 +19,12 @@ class Role(iam.Role):
             assume_role_policy=assume_role_policy,
             **kwargs,
         )
-        self.diagram = diagram.Node(
-            resource_name + "-role", icon="aws-iam-identity-center"
-        )
 
     def create_policy(
         self,
         resource_name: str,
         statements: list[iam.GetPolicyDocumentStatementArgs | dict],
-        **kwargs
+        **kwargs,
     ) -> Policy:
         policy = Policy(
             resource_name,

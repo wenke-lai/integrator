@@ -1,10 +1,7 @@
 from pulumi_aws import cloudwatch
 
-from diagrams.eraser import cloud_architecture as diagram
-
 
 class LogResourcePolicy(cloudwatch.LogResourcePolicy):
-
     def __init__(self, resource_name: str, **kwargs) -> None:
         """Create a new Log Resource Policy.
 
@@ -16,4 +13,3 @@ class LogResourcePolicy(cloudwatch.LogResourcePolicy):
         kwargs.setdefault("policy_name", resource_name)
 
         super().__init__(resource_name, **kwargs)
-        self.diagram = diagram.Group(resource_name, icon="aws-cloudwatch")

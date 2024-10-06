@@ -1,7 +1,5 @@
 from pulumi_aws import lambda_
 
-from diagrams.eraser import cloud_architecture as diagram
-
 
 class Function(lambda_.Function):
     def __init__(self, resource_name: str, **kwargs) -> None:
@@ -13,5 +11,3 @@ class Function(lambda_.Function):
         """
 
         super().__init__(resource_name, **kwargs)
-
-        self.diagram = diagram.Node(resource_name, icon="aws-lambda")

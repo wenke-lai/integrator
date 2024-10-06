@@ -1,7 +1,5 @@
 from pulumi_aws import dlm
 
-from diagrams.eraser import cloud_architecture as diagram
-
 
 class LifecyclePolicy(dlm.LifecyclePolicy):
     def __init__(self, resource_name: str, **kwargs) -> None:
@@ -12,5 +10,3 @@ class LifecyclePolicy(dlm.LifecyclePolicy):
             **kwargs: [additional arguments](https://www.pulumi.com/registry/packages/aws/api-docs/dlm/lifecyclepolicy/#inputs)
         """
         super().__init__(resource_name, **kwargs)
-
-        self.diagram = diagram.Node(resource_name + "-lifecycle-policy", icon="aws-ec2")

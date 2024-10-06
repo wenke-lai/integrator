@@ -4,8 +4,6 @@ from typing import TYPE_CHECKING
 
 from pulumi_aws import s3
 
-from diagrams.eraser import cloud_architecture as diagram
-
 if TYPE_CHECKING:
     from .bucket import Bucket
 
@@ -24,5 +22,3 @@ class BucketPolicy(s3.BucketPolicy):
         """
 
         super().__init__(resource_name, bucket=bucket.id, policy=policy, **kwargs)
-
-        self.diagram = diagram.Node(resource_name + "-bucket-policy", icon="aws-s3")

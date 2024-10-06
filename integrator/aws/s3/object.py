@@ -1,7 +1,5 @@
 from pulumi_aws import s3
 
-from diagrams.eraser import cloud_architecture as diagram
-
 GB = 1024**3
 
 
@@ -15,8 +13,6 @@ class Object(s3.BucketObjectv2):
         """
 
         super().__init__(resource_name, **kwargs)
-
-        self.diagram = diagram.Node(resource_name, icon="aws-simple-storage-service")
 
     @property
     def shortcut(self) -> str:

@@ -2,8 +2,6 @@ from typing import Optional
 
 from pulumi_aws import ec2, get_availability_zones
 
-from diagrams.eraser import cloud_architecture as diagram
-
 from .internet_gateway import GatewayRoute, InternetGateway
 from .security_group import SecurityGroup
 from .subnet import PrivateSubnet, PublicSubnet
@@ -30,7 +28,6 @@ class Vpc(ec2.Vpc):
             enable_dns_hostnames=enable_dns_hostnames,
             **kwargs,
         )
-        self.diagram = diagram.Group(resource_name, icon="aws-ec2")
 
         self.availability_zones: list[str] = self.get_availability_zones()
 

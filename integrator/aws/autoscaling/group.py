@@ -4,8 +4,6 @@ from typing import TYPE_CHECKING, Literal
 
 from pulumi_aws import autoscaling
 
-from diagrams.eraser import cloud_architecture as diagram
-
 if TYPE_CHECKING:
     from ..ec2.launch_template import LaunchTemplate
     from ..ec2.subnet import Subnet
@@ -42,5 +40,3 @@ class Group(autoscaling.Group):
             health_check_grace_period=health_check_grace_period,
             **kwargs,
         )
-
-        self.diagram = diagram.Group(resource_name, icon="aws-ec2-auto-scaling")

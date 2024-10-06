@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Literal, Optional
 
-from diagrams.eraser import cloud_architecture as diagram
 from pulumi_aws import cloudfront, iam
 
 from ..s3.bucket_policy import BucketPolicy
@@ -137,8 +136,6 @@ class Distribution(cloudfront.Distribution):
             # ),
             **kwargs,
         )
-
-        self.diagram = diagram.Node(resource_name, icon="aws-cloudfront")
 
         document = iam.get_policy_document(
             version="2008-10-17",

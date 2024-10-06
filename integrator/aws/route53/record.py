@@ -4,14 +4,11 @@ import typing
 
 from pulumi_aws import route53
 
-from diagrams.eraser import cloud_architecture as diagram
-
 if typing.TYPE_CHECKING:
     from .zone import Zone
 
 
 class Record(route53.Record):
-
     def __init__(
         self, resource_name: str, name: str, record: str, zone: Zone, **kwargs
     ) -> None:
@@ -32,11 +29,8 @@ class Record(route53.Record):
             resource_name, name=name, records=[record], zone_id=zone.id, **kwargs
         )
 
-        self.diagram = diagram.Node(resource_name, icon="aws-route53")
-
 
 class ARecord(Record):
-
     def __init__(
         self, resource_name: str, name: str, record: str, zone: Zone, **kwargs
     ) -> None:
@@ -61,7 +55,6 @@ class ARecord(Record):
 
 
 class CNameRecord(Record):
-
     def __init__(
         self, resource_name: str, name: str, record: str, zone: Zone, **kwargs
     ) -> None:

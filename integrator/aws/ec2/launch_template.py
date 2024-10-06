@@ -5,8 +5,6 @@ from typing import TYPE_CHECKING, Optional
 import pulumi
 from pulumi_aws import ec2
 
-from diagrams.eraser import cloud_architecture as diagram
-
 from .instance import Instance
 
 if TYPE_CHECKING:
@@ -84,8 +82,6 @@ class LaunchTemplate(ec2.LaunchTemplate):
             vpc_security_group_ids=vpc_security_group_ids,
             **kwargs,
         )
-
-        self.diagram = diagram.Node(resource_name, icon="aws-ec2")
 
     def create_instance(
         self,

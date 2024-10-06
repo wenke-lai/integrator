@@ -1,8 +1,6 @@
 import pulumi
 from pulumi_aws import get_arn, s3
 
-from diagrams.eraser import cloud_architecture as diagram
-
 from .object import Object
 
 
@@ -16,8 +14,6 @@ class Bucket(s3.BucketV2):
         """
 
         super().__init__(resource_name, **kwargs)
-
-        self.diagram = diagram.Node(resource_name, icon="aws-simple-storage-service")
 
     def upload_file(self, resource_name: str, **kwargs) -> Object:
         """Upload a file to the bucket.
