@@ -28,6 +28,7 @@ class Distribution(cloudfront.Distribution):
         cache_policy: Optional[CachePolicy] = None,
         ordered_cache_policy: Optional[CachePolicy] = None,
         response_header_policy: Optional[ResponseHeaderPolicy] = None,
+        default_response_header_policy: Optional[ResponseHeaderPolicy] = None,
         certificate: Optional[Certificate] = None,
         http_version: Optional[HTTP_VERSION] = "http2",
         price_class: Optional[PRICE_CLASS] = "PriceClass_100",
@@ -67,6 +68,8 @@ class Distribution(cloudfront.Distribution):
             response_header_policy = cloudfront.get_response_headers_policy(
                 name="Managed-SecurityHeadersPolicy"
             )
+        if default_response_header_policy is None:
+            default_response_header_policy = response_header_policy
 
         super().__init__(
             resource_name,
@@ -94,7 +97,7 @@ class Distribution(cloudfront.Distribution):
                 compress=True,
                 target_origin_id=bucket.id,
                 cache_policy_id=cache_policy.id,  # default (main) cache policy
-                response_headers_policy_id=response_header_policy.id,
+                response_headers_policy_id=default_response_header_policy.id,
             ),
             ordered_cache_behaviors=[
                 cloudfront.DistributionOrderedCacheBehaviorArgs(
